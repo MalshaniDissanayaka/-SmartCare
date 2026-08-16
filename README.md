@@ -52,7 +52,8 @@ This is a coursework proof-of-concept trained on a 330-record synthetic dataset.
 
 | Name | Student ID | Contribution |
 |---|---|---|
-| [Name] | [ID] | [e.g. Literature review & technical report] |
-| [Name] | [ID] | [e.g. Data preprocessing & feature engineering] |
-| [Name] | [ID] | [e.g. Model development & evaluation] |
-| [Name] | [ID] | [e.g. Explainable AI & prototype] |
+| [Name] | [CIT-23-02-0170] | [Literature review & technical report] |
+| [Name] | [CIT-23-02-0140] | [Data preprocessing & feature engineering] |
+| [Name] | [CIT-23-02-0122] | [Model development & evaluation] |
+| [Name] | [CIT-23-02-0046] | [Model development & evaluation] |
+| [Name] | [CIT-23-02-0026] | [Explainable AI & prototype] |
