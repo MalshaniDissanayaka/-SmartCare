@@ -4,7 +4,7 @@ SmartCare Hospital — 30-Day Readmission Risk Decision-Support Prototype
 CCS3440 Artificial Intelligence Coursework — Task 08
 
 Run:
-    streamlit run app.py
+    streamlit run app.py 
 """
 
 import json
