@@ -20,6 +20,7 @@ import shap
 import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from pathlib import Path
 
 st.set_page_config(
     page_title="SmartCare — Readmission Risk",
@@ -144,9 +145,41 @@ st.markdown(
 # ---------------------------------------------------------------------------
 @st.cache_resource
 def load_model():
-    pipeline = joblib.load("models/readmission_model.pkl")
-    with open("models/model_metadata.json", encoding="utf-8") as f:
+
+    # Supports both:
+    # 1. models/readmission_model.pkl
+    # 2. readmission_model.pkl
+    model_paths = [
+        Path("models/readmission_model.pkl"),
+        Path("readmission_model.pkl"),
+    ]
+
+    metadata_paths = [
+        Path("models/model_metadata.json"),
+        Path("model_metadata.json"),
+    ]
+
+    model_path = next((p for p in model_paths if p.exists()), None)
+    metadata_path = next((p for p in metadata_paths if p.exists()), None)
+
+    if model_path is None:
+        raise FileNotFoundError(
+            "readmission_model.pkl was not found. "
+            "Place it inside the 'models' folder or the same folder as app.py."
+        )
+
+    if metadata_path is None:
+        raise FileNotFoundError(
+            "model_metadata.json was not found. "
+            "Place it inside the 'models' folder or the same folder as app.py."
+        )
+
+    # IMPORTANT: The model is loaded using joblib.load()
+    pipeline = joblib.load(model_path)
+
+    with open(metadata_path, "r", encoding="utf-8") as f:
         meta = json.load(f)
+
     return pipeline, meta
 
 
@@ -163,7 +196,7 @@ with st.sidebar:
     st.markdown('<div class="sb-metric-label">Model</div>', unsafe_allow_html=True)
     st.markdown(
         f'<div class="sb-metric-value" style="font-size:1.05rem;">{meta["best_model_name"]}</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     c1, c2 = st.columns(2)
@@ -171,13 +204,14 @@ with st.sidebar:
         st.markdown('<div class="sb-metric-label">ROC-AUC</div>', unsafe_allow_html=True)
         st.markdown(
             f'<div class="sb-metric-value">{meta["test_roc_auc"]:.3f}</div>',
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
+
     with c2:
         st.markdown('<div class="sb-metric-label">F1 Score</div>', unsafe_allow_html=True)
         st.markdown(
             f'<div class="sb-metric-value">{meta["test_f1"]:.3f}</div>',
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     st.markdown("---")
@@ -187,12 +221,14 @@ with st.sidebar:
         "Readmission Risk**. You'll get a risk score, a recommended action, "
         "and a chart explaining which factors drove that specific prediction."
     )
+
     st.markdown("---")
     st.warning(
         "Trained on a 330-record synthetic teaching dataset. Not a clinically "
         "validated tool — predictions should never replace clinical judgement.",
         icon="⚠️",
     )
+
     st.caption("CCS3440 — Artificial Intelligence Coursework · SLTC")
 
 # ---------------------------------------------------------------------------
@@ -226,7 +262,7 @@ st.markdown(
 # ---------------------------------------------------------------------------
 st.markdown(
     '<div class="section-head"><span class="dot"></span> Patient Information</div>',
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
 with st.form("patient_form"):
@@ -330,23 +366,41 @@ def make_gauge(proba: float) -> go.Figure:
         go.Indicator(
             mode="gauge+number",
             value=proba * 100,
-            number={"suffix": "%", "font": {"color": INK, "size": 40}},
+            number={
+                "suffix": "%",
+                "font": {"color": INK, "size": 40}
+            },
             gauge={
                 "axis": {
                     "range": [0, 100],
                     "tickcolor": MUTED,
                     "tickfont": {"color": MUTED}
                 },
-                "bar": {"color": color, "thickness": 0.32},
+                "bar": {
+                    "color": color,
+                    "thickness": 0.32
+                },
                 "bgcolor": "rgba(0,0,0,0)",
                 "borderwidth": 0,
                 "steps": [
-                    {"range": [0, 40], "color": "rgba(63,164,106,0.18)"},
-                    {"range": [40, 70], "color": "rgba(217,123,79,0.18)"},
-                    {"range": [70, 100], "color": "rgba(217,83,79,0.18)"},
+                    {
+                        "range": [0, 40],
+                        "color": "rgba(63,164,106,0.18)"
+                    },
+                    {
+                        "range": [40, 70],
+                        "color": "rgba(217,123,79,0.18)"
+                    },
+                    {
+                        "range": [70, 100],
+                        "color": "rgba(217,83,79,0.18)"
+                    },
                 ],
                 "threshold": {
-                    "line": {"color": INK, "width": 2},
+                    "line": {
+                        "color": INK,
+                        "width": 2
+                    },
                     "thickness": 0.8,
                     "value": proba * 100
                 },
@@ -365,6 +419,7 @@ def make_gauge(proba: float) -> go.Figure:
 
 
 if submitted:
+
     total_bill = (
         consultation_fee
         + room_charge
@@ -413,7 +468,7 @@ if submitted:
     st.write("")
     st.markdown(
         '<div class="section-head"><span class="dot"></span> Prediction Result</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     r1, r2, r3 = st.columns([1, 1, 1.4])
@@ -446,33 +501,40 @@ if submitted:
                 "Consider a post-discharge home-visit or telehealth check-in.",
                 "Review medication adherence plan before discharge.",
             ]
+
         elif proba >= 0.4:
             actions = [
                 "Standard discharge planning with a follow-up appointment reminder.",
                 "Monitor at next scheduled visit.",
             ]
+
         else:
             actions = [
                 "Standard discharge process; no additional intervention indicated by the model."
             ]
 
-        items = "".join(f"<li>{a}</li>" for a in actions)
+        items = "".join(
+            f"<li>{a}</li>"
+            for a in actions
+        )
 
         st.markdown(
             f'<div class="reco-card"><h4>Recommended action</h4><ul>{items}</ul></div>',
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     # -----------------------------------------------------------------------
     # Local explanation (SHAP) for this specific patient
     # -----------------------------------------------------------------------
     st.write("")
+
     st.markdown(
         '<div class="section-head"><span class="dot"></span> Why This Prediction? (Explainable AI)</div>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 
     with st.spinner("Computing explanation..."):
+
         try:
             prep = pipeline.named_steps["prep"]
             clf = pipeline.named_steps["clf"]
@@ -483,34 +545,64 @@ if submitted:
                 transformed = transformed.toarray()
 
             feature_names = prep.get_feature_names_out()
+
             transformed_df = pd.DataFrame(
                 transformed,
                 columns=feature_names
             )
 
-            if hasattr(clf, "feature_importances_") or type(clf).__name__ in (
-                "RandomForestClassifier",
-                "XGBClassifier"
+            # ---------------------------------------------------------------
+            # SHAP explanation
+            # ---------------------------------------------------------------
+            if (
+                hasattr(clf, "feature_importances_")
+                or type(clf).__name__ in (
+                    "RandomForestClassifier",
+                    "XGBClassifier"
+                )
             ):
                 explainer = shap.TreeExplainer(clf)
-                sv = explainer.shap_values(transformed_df)
+                shap_result = explainer.shap_values(transformed_df)
 
-                if isinstance(sv, list):
-                    sv = sv[1]
-                elif isinstance(sv, np.ndarray) and sv.ndim == 3:
-                    sv = sv[:, :, 1]
+                if isinstance(shap_result, list):
+                    sv = shap_result[1]
+
+                elif isinstance(shap_result, np.ndarray):
+
+                    if shap_result.ndim == 3:
+                        sv = shap_result[:, :, 1]
+
+                    else:
+                        sv = shap_result
+
+                else:
+                    sv = np.asarray(shap_result)
 
             else:
-                explainer = shap.LinearExplainer(clf, transformed_df)
-                sv = explainer.shap_values(transformed_df)
+                explainer = shap.LinearExplainer(
+                    clf,
+                    transformed_df
+                )
 
-            contrib = pd.Series(
-                sv[0],
-                index=feature_names
-            ).sort_values(
-                key=abs,
-                ascending=False
-            ).head(8)
+                shap_result = explainer.shap_values(transformed_df)
+
+                if isinstance(shap_result, list):
+                    sv = shap_result[1]
+
+                else:
+                    sv = np.asarray(shap_result)
+
+            contrib = (
+                pd.Series(
+                    sv[0],
+                    index=feature_names
+                )
+                .sort_values(
+                    key=abs,
+                    ascending=False
+                )
+                .head(8)
+            )
 
             plt.rcParams.update({
                 "figure.facecolor": "none",
@@ -540,21 +632,30 @@ if submitted:
             )
 
             ax.spines[["top", "right"]].set_visible(False)
+
             fig.patch.set_alpha(0.0)
 
             with st.container(border=True):
-                st.pyplot(fig, transparent=True)
+                st.pyplot(
+                    fig,
+                    transparent=True
+                )
 
                 st.caption(
                     f'🟧 Orange bars push risk higher · 🟦 Teal bars push risk lower — '
                     f'these are the top factors for this specific patient.'
                 )
 
+            plt.close(fig)
+
         except Exception as e:
             st.warning(
                 f"Explanation unavailable for this configuration ({e})."
             )
 
+# ---------------------------------------------------------------------------
+# Footer
+# ---------------------------------------------------------------------------
 st.write("")
 
 st.markdown(
