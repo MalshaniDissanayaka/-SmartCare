@@ -54,8 +54,8 @@ This is a coursework proof-of-concept trained on a 330-record synthetic dataset.
 
 | Name | Student ID | Contribution |
 |---|---|---|
-| [Name] | [CIT-23-02-0170] | [Literature review & technical report] |
-| [Name] | [CIT-23-02-0140] | [Data preprocessing & feature engineering] |
-| [Name] | [CIT-23-02-0122] | [Model development & evaluation] |
-| [Name] | [CIT-23-02-0046] | [Model development & evaluation] |
-| [Name] | [CIT-23-02-0026] | [Explainable AI & prototype] |
+| [Achira Sadharanga] | [CIT-23-02-0170] | [Literature review & technical report] |
+| [Hithesh Maheepala] | [CIT-23-02-0140] | [Data preprocessing & feature engineering] |
+| [Seminda Fernando] | [CIT-23-02-0122] | [Model development & evaluation] |
+| [Navodya Sankalpani] | [CIT-23-02-0046] | [Model development & evaluation] |
+| [Malshani Dissanayaka] | [CIT-23-02-0026] | [Explainable AI & prototype] |
