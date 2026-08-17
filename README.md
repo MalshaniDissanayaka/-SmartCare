@@ -1,6 +1,6 @@
 # SmartCare Hospital — AI-Powered 30-Day Patient Readmission Prediction
 
-CCS3440 — Artificial Intelligence Coursework (SLTC, School of Computing & IT)
+CCS3440 — Artificial Intelligence Coursework (Faculty of Computing & IT at SLTC)
 
 A decision-support prototype that predicts whether a hospital patient is likely to be
 re-admitted within 30 days of discharge, trained on the SmartCare Hospital AI Dataset,
@@ -30,6 +30,8 @@ streamlit run app.py
 
 The app loads `models/readmission_model.pkl` and `models/model_metadata.json`, so run it
 from the repository root (or adjust the paths in `app.py` if you restructure folders).
+
+**Live demo**: https://i7j6zly2spyf5kxtor9znp.streamlit.app/
 
 ## Model Summary
 
