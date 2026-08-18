@@ -30,7 +30,7 @@ Welcome to the official repository for **SmartCare AI**, an intelligent clinical
 ├── 📄 SmartCare_Presentation.pptx             # Project presentation slides
 └── 📄 requirements.txt                        # Project dependencies
 
-## Running the Prototype
+Running the Prototype
 
 ```bash
 pip install -r requirements.txt
