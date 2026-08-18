@@ -1,25 +1,34 @@
-# SmartCare Hospital — AI-Powered 30-Day Patient Readmission Prediction
+# 🏥 SmartCare Hospital — AI-Powered 30-Day Patient Readmission Prediction
+**CCS3440 — Artificial Intelligence Coursework** | Faculty of Computing & IT at SLTC
 
-CCS3440 — Artificial Intelligence Coursework (Faculty of Computing & IT at SLTC)
+---
 
-A decision-support prototype that predicts whether a hospital patient is likely to be
-re-admitted within 30 days of discharge, trained on the SmartCare Hospital AI Dataset,
-with SHAP-based explainability and a Streamlit front end.
+## 🌟 Overview
+Welcome to the official repository for **SmartCare AI**, an intelligent clinical and operational decision-support prototype. Developed as part of the CCS3440 Artificial Intelligence coursework, this system predicts whether a hospital patient is likely to be readmitted within 30 days of discharge. By combining robust data pipelines, machine learning models, and transparent Explainable AI (XAI), SmartCare bridges the gap between raw healthcare data and actionable clinical insights.
 
-## Repository Contents
+🚀 **Explore the Live App:** [SmartCare Streamlit Prototype](https://i7j6zly2spyf5kxtor9znp.streamlit.app/)
 
-| File | Description |
-|---|---|
-| `SmartCare_Technical_Report.pdf` | Full technical report (all 14 required sections) |
-| `SmartCare_Readmission_Prediction.ipynb` | End-to-end notebook: preprocessing, EDA, model training, evaluation, SHAP |
-| `SmartCare_Readmission_Prediction.py` | Notebook exported as a plain Python script |
-| `app.py` | Streamlit prototype — loads the trained pipeline and serves predictions |
-| `models/readmission_model.pkl` | Trained scikit-learn pipeline (Logistic Regression, best ROC-AUC) |
-| `models/model_metadata.json` | Feature lists, category options, numeric ranges, test metrics |
-| `models/model_comparison_results.csv` | Accuracy / Precision / Recall / F1 / ROC-AUC for all 4 models |
-| `data/smartcare_ai_dataset_1000.csv` | Source dataset (1,000 records) |
-| `data/smartcare_ai_dataset_data_dictionary.csv` | Attribute definitions |
-| `SmartCare_Presentation.pptx` | Presentation slides |
+---
+
+## 📂 Repository Architecture
+```text
+📦 SmartCare-Readmission-Prediction
+│
+├── 📂 data/
+│   ├── smartcare_ai_dataset_1000.csv          # Source dataset (1,000 records)
+│   └── smartcare_ai_dataset_data_dictionary.csv # Attribute definitions and metadata
+│
+├── 📂 models/
+│   ├── readmission_model.pkl                  # Trained scikit-learn pipeline (Logistic Regression)
+│   ├── model_metadata.json                    # Feature lists, category options, and numerical bounds
+│   └── model_comparison_results.csv           # Comprehensive evaluation metrics across models
+│
+├── 📄 app.py                                  # Interactive Streamlit front-end application
+├── 📄 SmartCare_Readmission_Prediction.ipynb  # End-to-end Jupyter notebook (EDA, modeling, SHAP)
+├── 📄 SmartCare_Readmission_Prediction.py     # Clean Python script version of the core pipeline
+├── 📄 SmartCare_Technical_Report.pdf          # Full formal technical report (all 14 required sections)
+├── 📄 SmartCare_Presentation.pptx             # Project presentation slides
+└── 📄 requirements.txt                        # Project dependencies
 
 ## Running the Prototype
 
