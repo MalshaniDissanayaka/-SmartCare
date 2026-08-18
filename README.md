@@ -40,8 +40,6 @@ streamlit run app.py
 The app loads `models/readmission_model.pkl` and `models/model_metadata.json`, so run it
 from the repository root (or adjust the paths in `app.py` if you restructure folders).
 
-**Live demo**: https://i7j6zly2spyf5kxtor9znp.streamlit.app/
-
 ## Model Summary
 
 | Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
