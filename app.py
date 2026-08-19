@@ -27,8 +27,8 @@ st.set_page_config(page_title="SmartCare — Readmission Risk", page_icon="🏥"
 # ---------------------------------------------------------------------------
 @st.cache_resource
 def load_model():
-    pipeline = joblib.load("models/readmission_model.pkl")
-    with open("models/model_metadata.json") as f:
+    pipeline = joblib.load("readmission_model.pkl")
+    with open("model_metadata.json") as f:
         meta = json.load(f)
     return pipeline, meta
 
